@@ -59,7 +59,7 @@ const students = [
 if (students.length === 0) {
   fs.readFile('./students.txt', 'utf8', (err, data) => {
     if (err) return;
-    students data.split("\n").map(line => line.trim()).filter(line => line.length > 0);
+    students = data.split("\n").map(line => line.trim()).filter(line => line.length > 0);
   })
 }
 
@@ -119,9 +119,17 @@ function groupify(students, groupSize) {
     "Unadded Students": students.length,
   })
 
-  for (key in groups) {
-    console.log(`${key}: ${groups[key].join(", ")}`)
-  }
+  return Object.keys(groups).map(key => `${key}: ${groups[key].join(", ")}`).join('\n');
+  // for (key in groups) {
+  //   console.log(`${key}: ${groups[key].join(", ")}`)
+  // }
 }
 
-groupify(students, 2);
+fs.writeFile('./output.txt', groupify(students, 2), err => {
+  if (err) {
+    console.error(err)
+    return
+  } else {
+    console.log("Groups created and exported to output.txt! 🎉")
+  }
+})
