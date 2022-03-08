@@ -1,83 +1,127 @@
+const fs = require('fs');
+
 const students = [
     "Aaron Short",
     "Aletheia Kim",
-    "Alexander (Xander) Gangemi",
-    "Andrés (Andres) Soca",
+    "Alexander Gangemi",
     "Andrew Tran",
     "Anthony Adams",
     "Asia Le",
-    "Brittany Moliver",
     "Cameron Abbott",
     "Cameron Whiteside",
     "Christy Chen",
     "Cody Lavene",
     "Daniel Lavergne",
-    "David Nash",
     "Denise Li",
     "Dominique Samuels",
-    "Eduardo (Eddie) Verdusco",
+    "Eddie Verdusco",
     "Eric Cortez",
     "Gabriel Aspuria",
     "Grant Russell",
     "Haozhen Shu",
-    "Jacob (Jake) Weber",
-    "Jedd Basden",
+    "Jake Weber",
+    // "Jedd Basden",
     "Jennifer Dijaili",
     "Jesse Brooks",
-    "Jihoon (Jihoon (Fiona)) Choi",
-    "John (Tanner) Shaw",
-    "Jose (Andres) Aguilar-Garcia",
+    "Fiona Choi",
+    "Tanner Shaw",
+    "Andres Aguilar-Garcia",
     "Karandeep Singh",
-    "Kenneth (Ken) Dodson-Knapp",
+    "Kenneth Dodson-Knapp",
     "Kielvin Bariso",
     "Kreston Caldwell-Mcmurrin",
     "Matthew (Matt) Satterwhite",
     "Maxim Grigg",
     "Megan Mckenna",
-    "Meiyin (Mei) Shih",
+    "Mei Shih",
     "Minu Kim",
-    "Nathan (Nate) Treadaway",
+    "Nate Treadaway",
     "Nathaniel Tseng",
-    "Nik Tyler",
+    // "Nik Tyler",
     "Peter Shin",
     "Robert Popphan",
-    "Roger (Dylan) Silva",
+    "Dylan Silva",
     "Ryan Bender",
     "Savanah Trewman",
     "Seth Corbett",
-    "Sophia Bui",
+    // "Sophia Bui",
     "Sornam Vairavan",
     "Steve Correa",
     "Suhayl Khan",
     "Thien Dang",
     "Vivian Thach",
     "Vladimir Radovanovic",
-    "William (Will) Duffy",
-    "Yu Ra Kim",
+    "Will Duffy",
+    // "Yu Ra Kim",
     "Zhen Yu"
-]
+];
 
-function groupify(students, groupSize) {
-  const groups = {}
-  const numGroups = Math.floor(students.length / groupSize);
-  let studentsDup = students.slice();
-  for (let i = 1; i <= numGroups; i++) {
-    for (let j = 0; j < groupSize; j++) {
-      const randIdx = Math.floor(Math.random() * students.length);
-      const splitA = studentsDup.slice(0, randIdx);
-      const splitB = studentsDup.slice(randIdx);
-      const randStudent = splitA.pop();
-      studentsDup = splitA.concat(splitB);
-      if (randStudent) {
-        if (groups[i] === undefined) {
-          groups[i] = [randStudent];
-        } else {
-          groups[i].push(randStudent);
-        }
-      }
-    }
-  }
-  return groups;
+if (students.length === 0) {
+  fs.readFile('./students.txt', 'utf8', (err, data) => {
+    if (err) return;
+    students data.split("\n").map(line => line.trim()).filter(line => line.length > 0);
+  })
 }
 
-console.log(groupify(students, 3));
+const originalStudentCount = students.length;
+
+function shuffleArray(array) {
+  let curId = array.length;
+  while (0 !== curId) {
+    let randId = Math.floor(Math.random() * curId);
+    curId -= 1;
+    let tmp = array[curId];
+    array[curId] = array[randId];
+    array[randId] = tmp;
+  }
+  return array;
+}
+
+function groupify(students, groupSize) {
+  shuffleArray(students);
+  
+  const groups = {}
+  const addedStudents = [];
+  let groupNum = 1;
+
+  while (students.length > groupSize) {
+    const newGroup = [];
+    for (let i = 0; i < groupSize; i++) {
+      const student = students.pop();
+      newGroup.push(student);
+      addedStudents.push(student);
+    }
+    groups[groupNum] = newGroup;
+    groupNum += 1;
+  }
+
+  // if (
+  //     (groupSize < 3 && students.length > 0) ||
+  //     (students.length === groupSize - 1)
+  //   ) {
+  //   groups[groupNum] = [];
+  //   for (let j = 0; j <= students.length; j++) {
+  //     const student = students.pop();
+  //     groups[groupNum].push(student);
+  //     addedStudents.push(student);
+  //   }
+  // } else {
+    for (let j = 1; j <= students.length; j++) {
+      const student = students.pop();
+      groups[j].push(student);
+      addedStudents.push(student);
+    }
+  // }
+
+  console.log({
+    "Original Student Count": originalStudentCount,
+    "Added Students": addedStudents.length,
+    "Unadded Students": students.length,
+  })
+
+  for (key in groups) {
+    console.log(`${key}: ${groups[key].join(", ")}`)
+  }
+}
+
+groupify(students, 2);
