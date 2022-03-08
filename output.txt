@@ -1,24 +1,24 @@
-1: Jennifer Dijaili, Robert Popphan, Savanah Trewman
-2: Vivian Thach, Kreston Caldwell-Mcmurrin
-3: Andres Aguilar-Garcia, Anthony Adams
-4: Jake Weber, Steve Correa
-5: Seth Corbett, Suhayl Khan
-6: Zhen Yu, Sornam Vairavan
-7: Asia Le, Dylan Silva
-8: Dominique Samuels, Fiona Choi
-9: Karandeep Singh, Gabriel Aspuria
-10: Haozhen Shu, Minu Kim
-11: Andrew Tran, Cameron Whiteside
-12: Eddie Verdusco, Jesse Brooks
-13: Kenneth Dodson-Knapp, Cameron Abbott
-14: Tanner Shaw, Mei Shih
-15: Ryan Bender, Matthew (Matt) Satterwhite
-16: Kielvin Bariso, Christy Chen
-17: Will Duffy, Megan Mckenna
-18: Maxim Grigg, Aaron Short
-19: Grant Russell, Eric Cortez
-20: Denise Li, Aletheia Kim
-21: Peter Shin, Daniel Lavergne
-22: Alexander Gangemi, Vladimir Radovanovic
-23: Cody Lavene, Nathaniel Tseng
-24: Nate Treadaway, Thien Dang
+1: Will Duffy, Grant Russell, Peter Shin
+2: Karandeep Singh, Asia Le
+3: Robert Popphan, Matthew (Matt) Satterwhite
+4: Mei Shih, Nate Treadaway
+5: Eddie Verdusco, Cameron Abbott
+6: Tanner Shaw, Fiona Choi
+7: Maxim Grigg, Denise Li
+8: Suhayl Khan, Jennifer Dijaili
+9: Andres Aguilar-Garcia, Anthony Adams
+10: Megan Mckenna, Gabriel Aspuria
+11: Vladimir Radovanovic, Thien Dang
+12: Kenneth Dodson-Knapp, Eric Cortez
+13: Haozhen Shu, Dylan Silva
+14: Aletheia Kim, Steve Correa
+15: Kielvin Bariso, Sornam Vairavan
+16: Dominique Samuels, Vivian Thach
+17: Jesse Brooks, Ryan Bender
+18: Kreston Caldwell-Mcmurrin, Savanah Trewman
+19: Cameron Whiteside, Nathaniel Tseng
+20: Cody Lavene, Andrew Tran
+21: Seth Corbett, Aaron Short
+22: Christy Chen, Zhen Yu
+23: Alexander Gangemi, Daniel Lavergne
+24: Jake Weber, Minu Kim

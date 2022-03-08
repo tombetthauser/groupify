@@ -1,6 +1,8 @@
 const fs = require('fs');
+const readline = require("readline");
 
-const students = [
+let groupSize = null;
+let students = [
     "Aaron Short",
     "Aletheia Kim",
     "Alexander Gangemi",
@@ -114,6 +116,7 @@ function groupify(students, groupSize) {
   // }
 
   console.log({
+    "Group Size": groupSize,
     "Original Student Count": originalStudentCount,
     "Added Students": addedStudents.length,
     "Unadded Students": students.length,
@@ -125,11 +128,21 @@ function groupify(students, groupSize) {
   // }
 }
 
-fs.writeFile('./output.txt', groupify(students, 2), err => {
-  if (err) {
-    console.error(err)
-    return
-  } else {
-    console.log("Groups created and exported to output.txt! 🎉")
-  }
-})
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.question("Enter desired group size: ", function (groupSizeString) {
+  groupSize = parseInt(groupSizeString);
+  fs.writeFile('./output.txt', groupify(students, groupSize), err => {
+    if (err) {
+      console.error(err)
+      return
+    } else {
+      console.log("Groups created and exported to output.txt! 🎉")
+    }
+  })
+  rl.close();
+});
+
