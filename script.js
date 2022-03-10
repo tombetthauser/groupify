@@ -22,7 +22,7 @@ let students = [
     "Grant Russell",
     "Haozhen Shu",
     "Jake Weber",
-    // "Jedd Basden",
+    "Jedd Basden",
     "Jennifer Dijaili",
     "Jesse Brooks",
     "Fiona Choi",
