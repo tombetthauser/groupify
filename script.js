@@ -1,63 +1,24 @@
 const fs = require('fs');
 const readline = require("readline");
 
-let groupSize = null;
-let students = [
-    "Aaron Short",
-    "Aletheia Kim",
-    "Alexander Gangemi",
-    "Andrew Tran",
-    "Anthony Adams",
-    "Asia Le",
-    "Cameron Abbott",
-    "Cameron Whiteside",
-    "Christy Chen",
-    "Cody Lavene",
-    "Daniel Lavergne",
-    "Denise Li",
-    "Dominique Samuels",
-    "Eddie Verdusco",
-    "Eric Cortez",
-    "Gabriel Aspuria",
-    "Grant Russell",
-    "Haozhen Shu",
-    "Jake Weber",
-    "Jedd Basden",
-    "Jennifer Dijaili",
-    "Jesse Brooks",
-    "Fiona Choi",
-    "Tanner Shaw",
-    "Andres Aguilar-Garcia",
-    "Karandeep Singh",
-    "Kenneth Dodson-Knapp",
-    "Kielvin Bariso",
-    "Kreston Caldwell-Mcmurrin",
-    "Matthew (Matt) Satterwhite",
-    "Maxim Grigg",
-    "Megan Mckenna",
-    "Mei Shih",
-    "Minu Kim",
-    "Nate Treadaway",
-    "Nathaniel Tseng",
-    // "Nik Tyler",
-    "Peter Shin",
-    "Robert Popphan",
-    "Dylan Silva",
-    "Ryan Bender",
-    "Savanah Trewman",
-    "Seth Corbett",
-    // "Sophia Bui",
-    "Sornam Vairavan",
-    "Steve Correa",
-    "Suhayl Khan",
-    "Thien Dang",
-    "Vivian Thach",
-    "Vladimir Radovanovic",
-    "Will Duffy",
-    // "Yu Ra Kim",
-    "Zhen Yu"
-];
+const config = require('./config.json');
+const badPairs = config.pairsToBlock
 
+// ~~~~~~~~~~~~~~~ Back-Populate Bad Pairs ✅ ~~~~~~~~~~~~~~~
+for (student1 in badPairs) {
+  badPairs[student1].forEach(student2 => {
+    if (student2 in badPairs) {
+      badPairs[student2].push(student1)
+    } else {
+      badPairs[student2] = [student1]
+    }
+  })
+}
+
+let groupSize = null;
+let students = [];
+
+// ~~~~~~~~~~~~~~~ Import Students ✅ ~~~~~~~~~~~~~~~
 if (students.length === 0) {
   fs.readFile('./students.txt', 'utf8', (err, data) => {
     if (err) return;
@@ -65,8 +26,10 @@ if (students.length === 0) {
   })
 }
 
+// ~~~~~~~~~~~~~~~ For Testing ~~~~~~~~~~~~~~~
 const originalStudentCount = students.length;
 
+// ~~~~~~~~~~~~~~~ Shuffle Students ✅ ~~~~~~~~~~~~~~~
 function shuffleArray(array) {
   let curId = array.length;
   while (0 !== curId) {
@@ -79,6 +42,7 @@ function shuffleArray(array) {
   return array;
 }
 
+// ~~~~~~~~~~~~~~~ Main Function ~~~~~~~~~~~~~~~
 function groupify(students, groupSize) {
   shuffleArray(students);
   
@@ -89,7 +53,19 @@ function groupify(students, groupSize) {
   while (students.length > groupSize) {
     const newGroup = [];
     for (let i = 0; i < groupSize; i++) {
-      const student = students.pop();
+      let student = students.pop();
+      if (student in badPairs) {
+        let isBadPairInGroup = newGroup.reduce((acc, ele) => (badPairs[student].includes(ele) || acc), false)
+        // console.log({ isBadPairInGroup, student, newGroup, "badPairs[student]": badPairs[student]})
+        while (isBadPairInGroup) {
+          students.unshift(student);
+          student = students.pop();
+          isBadPairInGroup = false
+          if (student in badPairs) {
+            isBadPairInGroup = newGroup.reduce((ele, acc) => (badPairs[student].includes(ele) || acc), false)
+          }
+        }
+      }
       newGroup.push(student);
       addedStudents.push(student);
     }
@@ -108,18 +84,38 @@ function groupify(students, groupSize) {
   //     addedStudents.push(student);
   //   }
   // } else {
-    for (let j = 1; j <= students.length; j++) {
-      const student = students.pop();
-      groups[j].push(student);
-      addedStudents.push(student);
+  for (let j = 1; j <= students.length; j++) {
+    const student = students.pop();
+    groups[j].push(student);
+    addedStudents.push(student);
+  }
+
+  if (students.length > 0) {
+    for (let i = 0; i < students.length; i++) {
+      const student = students[i];
+      let j = 0;
+      let group = groups[j];
+      if (student in badPairs) {
+        let isBadPairInGroup = group.reduce((acc, ele) => (badPairs[student].includes(ele) || acc), false)
+        // console.log({ isBadPairInGroup, student, newGroup, "badPairs[student]": badPairs[student]})
+        while (isBadPairInGroup) {
+          
+          isBadPairInGroup = false
+          if (student in badPairs) {
+            isBadPairInGroup = newGroup.reduce((ele, acc) => (badPairs[student].includes(ele) || acc), false)
+          }
+        }
+      }
     }
+  }
   // }
 
   console.log({
     "Group Size": groupSize,
     "Original Student Count": originalStudentCount,
     "Added Students": addedStudents.length,
-    "Unadded Students": students.length,
+    "Unadded Student Count": students.length,
+    "Unadded Students": students,
   })
 
   return Object.keys(groups).map(key => `${key}: ${groups[key].join(", ")}`).join('\n');
